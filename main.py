@@ -31,5 +31,5 @@ rendered_page = template.render(factory_age=get_factory_age())
 with open('index.html', 'w', encoding="utf8") as file:
     file.write(rendered_page)
 
-server = HTTPServer(('0.0.0.0', 5000), SimpleHTTPRequestHandler)
+server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
 server.serve_forever()
