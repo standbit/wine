@@ -3,6 +3,7 @@ from os import read
 from typing import Collection
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import datetime
+from jinja2.utils import generate_lorem_ipsum
 import pandas
 from pprint import pprint, pformat
 import collections
@@ -27,7 +28,7 @@ def get_factory_age():
 
 
 def get_info_from_excel():
-    excel_data = pandas.read_excel(io="wine3.xlsx", na_values=" ", keep_default_na=False)
+    excel_data = pandas.read_excel(io="wine4.xlsx", na_values=" ", keep_default_na=False)
     excel_data_upd = excel_data.to_dict("records") 
     wine_info_keys = []
     for item in excel_data_upd:
@@ -72,7 +73,7 @@ def start_server():
 def main():
     make_index_page()
     start_server()
-
+    
 
 if __name__ == "__main__":
     main()
