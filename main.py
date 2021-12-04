@@ -1,4 +1,5 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+from os import read
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import datetime
 import pandas
@@ -24,8 +25,21 @@ def get_factory_age():
 
 
 def read_excel():
-    excel_data = pandas.read_excel("wine.xlsx", usecols=["Name", "Sort", "Price", "Image"])
-    return excel_data.to_dict(orient="records")
+    excel_data = pandas.read_excel(io="wine2.xlsx", na_values=" ", keep_default_na=False)
+    # return excel_data
+    excel_data_upd = excel_data.to_dict("records") 
+    wine_info_keys = []
+    for item in excel_data_upd:
+        if item["Категория"] not in wine_info_keys:
+            wine_info_keys.append(item["Категория"])
+    wine_info = dict()
+    for i in wine_info_keys:
+        x = []
+        for item in excel_data_upd:
+            if item["Категория"] == i:
+                x.append(item)
+            wine_info[i] = x
+    return wine_info
 
 
 def make_env():
@@ -56,11 +70,9 @@ def start_server():
 
 
 def main():
-    # global excel_data
-    # excel_data = read_excel()
-    # #pprint.pprint(excel_data)
-    make_index_page()
-    start_server()
+    #make_index_page()
+    #start_server()
+    pprint.pprint(read_excel(), sort_dicts=False)
 
 
 if __name__ == "__main__":
