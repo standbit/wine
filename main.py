@@ -28,8 +28,11 @@ def get_factory_age():
 
 
 def get_info_from_excel():
-    excel_data = pandas.read_excel(io="wine4.xlsx", na_values=" ", keep_default_na=False)
-    excel_data_upd = excel_data.to_dict("records") 
+    excel_data = pandas.read_excel(
+        io="wine4.xlsx",
+        na_values=" ",
+        keep_default_na=False)
+    excel_data_upd = excel_data.to_dict("records")
     wine_info_keys = []
     for item in excel_data_upd:
             wine_info_keys.append(item["Категория"])
@@ -44,19 +47,17 @@ def get_info_from_excel():
 
 def make_env():
     env = Environment(
-    loader=FileSystemLoader('.'),
-    autoescape=select_autoescape(['html', 'xml'])
-    )
+        loader=FileSystemLoader('.'),
+        autoescape=select_autoescape(['html', 'xml']))
     return env
 
 
 def make_rendered_page():
     template = make_env().get_template('template.html')
     rendered_page = template.render(
-    factory_age=get_factory_age(),
-    wines_info=get_info_from_excel(),
-    wines_info_keys=sorted(get_info_from_excel().keys())
-    )
+        factory_age=get_factory_age(),
+        wines_info=get_info_from_excel(),
+        wines_info_keys=sorted(get_info_from_excel().keys()))
     return rendered_page
 
 
@@ -73,7 +74,7 @@ def start_server():
 def main():
     make_index_page()
     start_server()
-    
+
 
 if __name__ == "__main__":
     main()
