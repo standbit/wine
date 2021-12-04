@@ -1,9 +1,11 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from os import read
+from typing import Collection
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import datetime
 import pandas
-import pprint
+from pprint import pprint, pformat
+import collections
 
 
 def get_factory_age():
@@ -24,21 +26,18 @@ def get_factory_age():
     return str(delta_year) + ' ' + year_word
 
 
-def read_excel():
-    excel_data = pandas.read_excel(io="wine2.xlsx", na_values=" ", keep_default_na=False)
-    # return excel_data
+def get_info_from_excel():
+    excel_data = pandas.read_excel(io="wine3.xlsx", na_values=" ", keep_default_na=False)
     excel_data_upd = excel_data.to_dict("records") 
     wine_info_keys = []
     for item in excel_data_upd:
-        if item["Категория"] not in wine_info_keys:
             wine_info_keys.append(item["Категория"])
-    wine_info = dict()
+    wine_info_keys = list(collections.Counter(wine_info_keys))
+    wine_info = collections.defaultdict(list)
     for i in wine_info_keys:
-        x = []
         for item in excel_data_upd:
             if item["Категория"] == i:
-                x.append(item)
-            wine_info[i] = x
+                wine_info[i].append(item)
     return wine_info
 
 
@@ -54,7 +53,8 @@ def make_rendered_page():
     template = make_env().get_template('template.html')
     rendered_page = template.render(
     factory_age=get_factory_age(),
-    wines_info=read_excel()
+    wines_info=get_info_from_excel(),
+    wines_info_keys=sorted(get_info_from_excel().keys())
     )
     return rendered_page
 
@@ -70,9 +70,8 @@ def start_server():
 
 
 def main():
-    #make_index_page()
-    #start_server()
-    pprint.pprint(read_excel(), sort_dicts=False)
+    make_index_page()
+    start_server()
 
 
 if __name__ == "__main__":
