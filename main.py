@@ -29,7 +29,7 @@ def get_factory_age():
 
 def get_info_from_excel():
     excel_data = pandas.read_excel(
-        io="wine3.xlsx",
+        io="example_wine_database.xlsx",
         na_values=" ",
         keep_default_na=False)
     excel_data_upd = excel_data.to_dict("records")
@@ -67,7 +67,7 @@ def make_index_page():
 
 
 def start_server():
-    server = HTTPServer(('0.0.0.0', 9000), SimpleHTTPRequestHandler)
+    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
     server.serve_forever()
 
 
