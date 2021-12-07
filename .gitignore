@@ -1,2 +1,23 @@
-env/
+# Ignore IDE specific files
+.idea/
 .vscode/
+*.sw*
+
+# Ignore byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore Logs
+logs
+*.log
+
+# Ignore the build directory
+/dist
+
+# Ignore the file containing environment variables 
+.env
+
+# Ignore system files
+Thumbs.db
+.DS_Store 

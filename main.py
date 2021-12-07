@@ -29,7 +29,7 @@ def get_factory_age():
 
 def get_info_from_excel():
     excel_data = pandas.read_excel(
-        io="wine4.xlsx",
+        io="wine3.xlsx",
         na_values=" ",
         keep_default_na=False)
     excel_data_upd = excel_data.to_dict("records")
