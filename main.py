@@ -1,18 +1,14 @@
-from http.server import HTTPServer, SimpleHTTPRequestHandler
-from os import read
-from typing import Collection
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-import datetime
-from jinja2.utils import generate_lorem_ipsum
-import pandas
-from pprint import pprint, pformat
 import collections
+import datetime
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+
+import pandas
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def get_factory_age():
     wine_factory_founded_year = int("1920")
-    current_year = datetime.datetime.now().year
-    delta_year = current_year - wine_factory_founded_year
+    delta_year = datetime.datetime.now().year - wine_factory_founded_year
     delta_year_ends = ["год", "года", "лет"]
     year_word = ""
     if ((delta_year % 100) // 10) == 1:
@@ -35,7 +31,7 @@ def get_info_from_excel():
     excel_data_upd = excel_data.to_dict("records")
     wine_info_keys = []
     for item in excel_data_upd:
-            wine_info_keys.append(item["Категория"])
+        wine_info_keys.append(item["Категория"])
     wine_info_keys = list(collections.Counter(wine_info_keys))
     wine_info = collections.defaultdict(list)
     for i in wine_info_keys:
