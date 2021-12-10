@@ -1,9 +1,30 @@
 import collections
 import datetime
+import os
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
+import click
 import pandas
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+DEFAULT_WINE_PATH_FILE = os.getenv("wine_file_path")
+
+
+@click.command()
+@click.option(
+    "--file_path",
+    prompt="Введите путь к файлу с винами",
+    default=DEFAULT_WINE_PATH_FILE,
+    help="Укажите, где находится путь к файлу с информацией о винах")
+def get_user_file(file_path):
+    if os.path.isfile(file_path):
+        print("OK, идите в браузер на сайт!")
+        return file_path
+    else:
+        print("""NOK, запустите программу снова /
+        и попробуйте ввести путь к файлу с винами правильно! /
+        Либо используйте дефолтный файл.""")
+        return exit()
 
 
 def get_factory_age():
@@ -25,19 +46,19 @@ def get_factory_age():
 
 def get_sorted_wines_dict():
     wines_excel_table = pandas.read_excel(
-        io="example_wine_database.xlsx",
+        io=get_user_file.main(standalone_mode=False),
         na_values=" ",
         keep_default_na=False)
     wines_dict = wines_excel_table.to_dict("records")
     wines_dict_keys = []
-    for i in wines_dict:
-        wines_dict_keys.append(i["Категория"])
+    for key in wines_dict:
+        wines_dict_keys.append(key["Категория"])
     wines_dict_keys = list(collections.Counter(wines_dict_keys))
     wines_dict_sorted = collections.defaultdict(list)
-    for i in wines_dict_keys:
-        for x in wines_dict:
-            if x["Категория"] == i:
-                wines_dict_sorted[i].append(x)
+    for key in wines_dict_keys:
+        for category in wines_dict:
+            if category["Категория"] == key:
+                wines_dict_sorted[key].append(category)
     return wines_dict_sorted
 
 
@@ -63,7 +84,7 @@ def make_index_page():
 
 
 def start_server():
-    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
+    server = HTTPServer(('0.0.0.0', 9000), SimpleHTTPRequestHandler)
     server.serve_forever()
 
 
