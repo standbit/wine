@@ -38,21 +38,20 @@ def get_factory_age():
 def get_grouped_wines():
     args = create_parser().parse_args()
     path = args.path
-    wines_excel_table = pandas.read_excel(
+    wines = pandas.read_excel(
         io=path,
         na_values=" ",
-        keep_default_na=False)
-    wines = wines_excel_table.to_dict("records")
+        keep_default_na=False).to_dict("records")
     wines_keys = []
     for wine in wines:
         wines_keys.append(wine["Категория"])
     wines_keys = list(collections.Counter(wines_keys))
-    final_wines = collections.defaultdict(list)
+    grouped_wines = collections.defaultdict(list)
     for key in wines_keys:
         for wine in wines:
             if wine["Категория"] == key:
-                final_wines[key].append(wine)
-    return final_wines
+                grouped_wines[key].append(wine)
+    return grouped_wines
 
 
 def make_env():
@@ -65,10 +64,10 @@ def make_env():
 def make_rendered_page():
     template = make_env().get_template('template.html')
     factory_age = get_factory_age()
-    final_wines = get_grouped_wines()
+    grouped_wines = get_grouped_wines()
     rendered_page = template.render(
         factory_age=factory_age,
-        final_wines=final_wines)
+        grouped_wines=grouped_wines)
     return rendered_page
 
 
