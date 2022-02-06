@@ -50,13 +50,13 @@ def get_grouped_wines():
 
 def make_env():
     env = Environment(
-        loader=FileSystemLoader('.'),
-        autoescape=select_autoescape(['html', 'xml']))
+        loader=FileSystemLoader("."),
+        autoescape=select_autoescape(["html", "xml"]))
     return env
 
 
 def make_rendered_page():
-    template = make_env().get_template('template.html')
+    template = make_env().get_template("template.html")
     factory_age = get_factory_age()
     grouped_wines = get_grouped_wines()
     rendered_page = template.render(
@@ -67,12 +67,12 @@ def make_rendered_page():
 
 def make_index_page():
     rendered_page = make_rendered_page()
-    with open('index.html', 'w', encoding="utf8") as file:
+    with open("index.html", "w", encoding="utf8") as file:
         file.write(rendered_page)
 
 
 def start_server():
-    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
+    server = HTTPServer(("0.0.0.0", 8000), SimpleHTTPRequestHandler)
     server.serve_forever()
 
 
