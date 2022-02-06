@@ -35,7 +35,7 @@ def get_factory_age():
     return f"{winery_age} {winery_age_word}"
 
 
-def get_sorted_wines_dict():
+def get_grouped_wines():
     args = create_parser().parse_args()
     path = args.path
     wines_excel_table = pandas.read_excel(
@@ -65,7 +65,7 @@ def make_env():
 def make_rendered_page():
     template = make_env().get_template('template.html')
     factory_age = get_factory_age()
-    final_wines = get_sorted_wines_dict()
+    final_wines = get_grouped_wines()
     rendered_page = template.render(
         factory_age=factory_age,
         final_wines=final_wines)
