@@ -42,15 +42,9 @@ def get_grouped_wines():
         io=path,
         na_values=" ",
         keep_default_na=False).to_dict("records")
-    wines_keys = []
-    for wine in wines:
-        wines_keys.append(wine["Категория"])
-    wines_keys = list(collections.Counter(wines_keys))
     grouped_wines = collections.defaultdict(list)
-    for key in wines_keys:
-        for wine in wines:
-            if wine["Категория"] == key:
-                grouped_wines[key].append(wine)
+    for wine in wines:
+        grouped_wines[wine["Категория"]].append(wine)
     return grouped_wines
 
 
